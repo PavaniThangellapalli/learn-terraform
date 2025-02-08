@@ -4,7 +4,7 @@ module "sample" {
     value = var.x
   }
   output "y" {
-    value = var.x
+    value = var.y
   }
 }
 variable "x" {}
