@@ -1,12 +1,14 @@
 module "sample" {
   source = "./sample"
-  output "x" {
-    value = var.x
-  }
-  output "y" {
-    value = var.y
-  }
+  x = var.x
+  y = var.y
 }
 variable "x" {}
 variable "y" {}
 
+output "x" {
+  value = var.x
+}
+output "y" {
+  value = var.y
+}
