@@ -1,7 +1,11 @@
 module "sample" {
   source = "./sample"
-  x = var.x
-  y = var.y
+  output "x" {
+    value = var.x
+  }
+  output "y" {
+    value = var.x
+  }
 }
 variable "x" {}
 variable "y" {}
