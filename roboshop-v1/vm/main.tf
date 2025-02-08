@@ -22,7 +22,7 @@ resource "azurerm_public_ip" "public_ip" {
   location            = data.azurerm_resource_group.rg.location
   name                = "${var.component}-public-ip"
   resource_group_name = data.azurerm_resource_group.rg.name
-  sku                 = "basic"
+  sku                 = "Basic"
 }
 resource "azurerm_network_interface_security_group_association" "nsgnic" {
   network_interface_id      = azurerm_network_interface.nic.id
