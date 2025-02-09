@@ -88,7 +88,7 @@ resource "null_resource" "ansible" {
     }
     inline = [
       "sudo dnf install python3.12-pip -y",
-      "pip3.12 install ansible",
+      "sudo pip3.12 install ansible",
       "ansible-pull -i -localhost -U https://github.com/PavaniThangellapalli/roboshop-ansible.git, -e ENV=dev -e app_name=${var.component} roboshop.yml"
     ]
   }
