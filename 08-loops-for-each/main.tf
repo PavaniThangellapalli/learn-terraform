@@ -4,7 +4,7 @@ resource "local_file" "foo" {
   filename = "/tmp/${each.value}"
 }
 variable "demo" {
-  default {
+  default = {
     APPLE  = "apple"
     ORANGE = "orange"
     BANANA = "banana"
