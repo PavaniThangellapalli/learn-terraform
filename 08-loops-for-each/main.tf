@@ -4,10 +4,10 @@ resource "local_file" "foo" {
   filename = "/tmp/${each.value}"
 }
 variable "demo" {
-  default = [
-     "apple",
-     "orange",
-     "banana",
-     "mango"
-  ]
+  default {
+    APPLE  = "apple"
+    ORANGE = "orange"
+    BANANA = "banana"
+    MANGO  = "mango"
+  }
 }
