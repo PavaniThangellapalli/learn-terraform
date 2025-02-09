@@ -1,3 +1,10 @@
+resource "azurerm_public_ip" "public_ip" {
+  name                = "${var.component}-public-ip"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  sku                 = "Basic"
+  allocation_method   = "Dynamic"
+}
 resource "azurerm_network_interface" "nic" {
   name                = "${var.component}-nic"
   location            = data.azurerm_resource_group.rg.location
@@ -9,23 +16,43 @@ resource "azurerm_network_interface" "nic" {
     public_ip_address_id = azurerm_public_ip.public_ip.id
   }
 }
-resource "azurerm_public_ip" "public_ip" {
-  allocation_method   = "Dynamic"
+resource "azurerm_network_security_group" "nsg" {
+  name                = "${var.component}-nsg"
   location            = data.azurerm_resource_group.rg.location
-  name                = "${var.component}-public-ip"
   resource_group_name = data.azurerm_resource_group.rg.name
-  sku                 = "Basic"
+  security_rule {
+    name                       = "main"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  tags = {
+    component = var.component
+  }
 }
 resource "azurerm_network_interface_security_group_association" "nsgnic" {
   network_interface_id      = azurerm_network_interface.nic.id
-  network_security_group_id = data.azurerm_network_security_group.nsg.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+resource "azurerm_dns_a_record" "main" {
+  name                = "${var.component}-dev"
+  zone_name           = "pavanidevops.online"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  ttl                 = 10
+  records             = [azurerm_network_interface.nic.private_ip_address]
 }
 resource "azurerm_virtual_machine" "main" {
-  name                = var.component
-  location            = data.azurerm_resource_group.rg.location
-  resource_group_name = data.azurerm_resource_group.rg.name
+  depends_on            = [azurerm_network_interface_security_group_association.nsgnic, azurerm_dns_a_record.main]
+  name                  = var.component
+  location              = data.azurerm_resource_group.rg.location
+  resource_group_name   = data.azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.nic.id]
-  vm_size             = "Standard_DS1_v2"
+  vm_size               = "Standard_DS1_v2"
 
   delete_os_disk_on_termination = true
 
@@ -49,6 +76,9 @@ resource "azurerm_virtual_machine" "main" {
   tags = {
     environment = var.component
   }
+}
+resource "null_resource" "ansible" {
+  depends_on = [azurerm_virtual_machine.main]
   provisioner "remote-exec" {
     connection {
       type     = "ssh"
