@@ -87,7 +87,7 @@ resource "null_resource" "ansible" {
       host     = azurerm_public_ip.public_ip.ip_address
     }
     inline = [
-      "sudo dnf install python3.12-pip",
+      "sudo dnf install python3.12-pip -y",
       "pip3.12 install ansible",
       "ansible-pull -i -localhost -U https://github.com/PavaniThangellapalli/roboshop-shell.git, -e ENV=dev -e app_name=${var.component} roboshop.yml"
     ]
