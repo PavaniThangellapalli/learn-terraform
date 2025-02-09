@@ -7,9 +7,10 @@ resource "null_resource" "demo" {
 variable "demo" {
   default = [
               "orange",
+              "mango",
               "apple",
               "banana",
-
+              "apricot"
   ]
 }
 resource "local_file" "foo" {
