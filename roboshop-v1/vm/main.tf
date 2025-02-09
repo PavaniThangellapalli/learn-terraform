@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.108.0"
-    }
-  }
-}
 resource "azurerm_network_interface" "nic" {
   name                = "${var.component}-nic"
   location            = data.azurerm_resource_group.rg.location
