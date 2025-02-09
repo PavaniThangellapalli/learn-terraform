@@ -49,4 +49,17 @@ resource "azurerm_virtual_machine" "main" {
   tags = {
     environment = var.component
   }
+  provisioner "remote-exec" {
+    connection {
+      type = "ssh"
+      user = "pavani"
+      password = "UseMind@1234"
+      host = azurerm_public_ip.public_ip.ip_address
+    }
+    inline = [
+      "sudo dnf install python3.12-pip",
+      "pip3.12 install ansible",
+      "ansible-pull -i -localhost -U https://github.com/PavaniThangellapalli/roboshop-shell.git, -e ENV=dev -e app_name=${var.component} roboshop.yml"
+    ]
+  }
 }
