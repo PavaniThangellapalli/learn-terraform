@@ -9,7 +9,7 @@ variable "demo" {
               "orange",
               "apple",
               "banana",
-              "apricot"
+
   ]
 }
 resource "local_file" "foo" {
