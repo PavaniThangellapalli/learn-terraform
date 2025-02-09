@@ -21,11 +21,11 @@ resource "azurerm_network_interface_security_group_association" "nsgnic" {
   network_security_group_id = data.azurerm_network_security_group.nsg.id
 }
 resource "azurerm_virtual_machine" "main" {
-  name                  = var.component
-  location              = data.azurerm_resource_group.rg.location
-  resource_group_name   = data.azurerm_resource_group.rg.name
+  name                = var.component
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.nic.id]
-  vm_size               = "Standard_DS1_v2"
+  vm_size             = "Standard_DS1_v2"
 
   delete_os_disk_on_termination = true
 
@@ -51,10 +51,10 @@ resource "azurerm_virtual_machine" "main" {
   }
   provisioner "remote-exec" {
     connection {
-      type = "ssh"
-      user = "pavani"
+      type     = "ssh"
+      user     = "pavani"
       password = "UseMind@1234"
-      host = azurerm_public_ip.public_ip.ip_address
+      host     = azurerm_public_ip.public_ip.ip_address
     }
     inline = [
       "sudo dnf install python3.12-pip",
