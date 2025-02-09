@@ -6,7 +6,16 @@ resource "null_resource" "demo" {
 }
 variable "demo" {
   default = [
+              "orange",
               "apple",
-              "banana"
+              "banana",
+              "apricot"
   ]
 }
+resource "local_file" "foo" {
+  count = length(var.demo)
+  content = var.demo[count.index]
+  filename = "/tmp/file-${count.index}"
+}
+
+
