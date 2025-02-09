@@ -4,8 +4,8 @@ resource "local_file" "foo" {
   filename = "/tmp/${each.key}"
 }
 variable "demo" {
-  default = [
-              "orange",
-              "banana"
-  ]
+  default = {
+    ORANGE = "orange",
+    BANANA = "banana"
+  }
 }
