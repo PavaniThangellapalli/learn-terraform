@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.2"
+    }
+  }
+}
 variable "a" {}
 
 output "test" {
@@ -5,4 +13,10 @@ output "test" {
 }
 resource "null_resource" "test1" {
   count = var.a > 10 ? 1 : 0
+}
+locals {
+  count = var.a > 10 ? 1 : 0
+}
+resource "null_resource" "test2" {
+  count = local.count
 }
