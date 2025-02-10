@@ -17,9 +17,9 @@ resource "null_resource" "test" {
 locals {
   count = var.a > 10 ? 1 : 0
 }
-resource "null_resource" "test" {
+resource "null_resource" "test1" {
   count = local.count
 }
-resource "null_resource" "test" {
+resource "null_resource" "test2" {
   count = local.count
 }
