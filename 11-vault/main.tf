@@ -11,6 +11,10 @@ resource "local_file" "local" {
   filename = "/tmp/pass"
   content = data.vault_generic_secret.secret_data.data["password"]
 }
-output "print" {
-  value = local_file.local.content
+data "vault_kv_secret" "secret_data" {
+  path = "test/data/demo-ssh"
+}
+resource "local_file" "local1" {
+filename = "/tmp/pass1"
+content = replace(replace(jsonencode(data.vault_kv_secret.secret_data), "\"", ""), ":", "=")
 }
