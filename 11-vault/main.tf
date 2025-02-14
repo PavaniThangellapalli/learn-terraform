@@ -11,3 +11,6 @@ resource "local_file" "local" {
   filename = "/tmp/pass"
   content = data.vault_generic_secret.secret_data.data["password"]
 }
+output "print" {
+  value = local_file.local.content
+}
